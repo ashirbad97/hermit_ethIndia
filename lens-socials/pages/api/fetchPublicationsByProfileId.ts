@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
-import { getPublications } from "../../util/queries/getPublications";
+import { publicationsByProfileId } from "../../util/queries/getPublicationsByProfileId";
 type Data = {
   name: string;
 };
@@ -17,12 +17,27 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let userPublicationList = {}
+  let userPublicationList= Array<{
+    __typename: string;
+    id: string;
+    metadata: {
+      name: string;
+      description: string;
+      content: string;
+      media: Array<{
+        original: {
+          url: string;
+        }
+      }>;
+    };
+    createdAt: string;     
+  }>;
+
   try {
     const response = await client
-      .query(getPublications, { req.query.profileId, req.query.limit })
+      .query(publicationsByProfileId, { req.query.profileId, req.query.limit })
       .toPromise();
-    const userPublicationList = response.data?.publications?.items;
+    const userPublicationList = response.data.publications.items;
     return userPublicationList;
   } catch (error) {
     console.log(`fetchPublicationsProfileId failed due to ` + error);
