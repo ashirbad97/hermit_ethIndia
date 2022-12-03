@@ -57,7 +57,7 @@ export default async function handler(
       .query(mutualFollowersProfiles, { viewingProfileId, yourProfileId })
       .toPromise();
     mutualFollowersList = response.data.mutualFollowersProfiles.items;
-    return mutualFollowersList;
+    console.log();
   } catch (error) {
     console.log(`fetchRecommendedProfiles failed due to ` + error);
   }

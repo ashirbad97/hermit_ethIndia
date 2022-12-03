@@ -29,7 +29,6 @@ export default async function handler(
       .query(profileInterests, { profileId })
       .toPromise();
     profileInteresetsList = response.data.profile;
-    return profileInteresetsList;
   } catch (error) {
     console.log(`fetchProfileInterests failed due to ` + error);
   }
