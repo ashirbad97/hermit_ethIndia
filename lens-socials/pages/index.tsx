@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useState } from "react";
 import Header from "../components/Header";
 import PostField from "../components/PostField";
+import UserFeed from "../components/UserFeed";
 
 export default function Home() {
   const [inputValue, setInputValue] = useState<string>("");
@@ -15,6 +16,7 @@ export default function Home() {
       <Header value={inputValue} onChange={setInputValue} />
       <div className="">
         <PostField />
+        <UserFeed profileId={"0x02"} />
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 import { FC } from "react";
-import type { UserFeed } from "../types/userFeed";
+import type { UserFeed as UserFeedType } from "../types/userFeed";
 import useSWR from "swr";
 import Image from "next/image";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const UserFeed: FC<{ profileId: string }> = ({ profileId }) => {
   const { data, error } = useSWR(
-    `/api/userFeed?profileId?profileId=${profileId}`,
+    `/api/fetchUserFeed?profileId=${profileId}&limit=10`,
     fetcher
   );
 
@@ -16,14 +16,16 @@ const UserFeed: FC<{ profileId: string }> = ({ profileId }) => {
   return (
     <>
       <div className="flex flex-col">
-        {data.userFeed.map((feed: UserFeed) => (
+        {data.userFeed.map((feed: UserFeedType) => (
           <div className="rounded-lg bg-white mt-4 p-6 flex flex-col">
             <div className="grid grid-cols-5">
               <Image
                 src={
-                  feed.root.profile.picture?.original.url
-                    ? feed.root.profile.picture?.original.url
-                    : "https://picsum.photos/64"
+                  feed.root.profile.picture?.original.url != undefined &&
+                  (feed.root.profile.picture?.original?.url).includes("ipfs://")
+                    ? "https://ipfs.io/" +
+                      feed.root.profile.picture?.original?.url.replace(":/", "")
+                    : feed.root.profile.picture?.original?.url
                 }
                 alt="profile image"
                 width={32}
