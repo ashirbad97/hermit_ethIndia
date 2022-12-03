@@ -4,6 +4,7 @@ import * as IPFS from "ipfs-core";
 import { create } from "ipfs-http-client";
 import mumbaiTestnetAbi from "./mumbaiTestnetAbi.json";
 import omitDeep from 'omit-deep'
+import * as PushAPI from "@pushprotocol/restapi";
 // const APIURL = `https://api.lens.dev`
 const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
 const CHANNEL_ADDRESS = "0x5a4F5B1661BB975Ded33b8c6BbA62CCaeE2578C3"

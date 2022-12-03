@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@pushprotocol/restapi": "^0.2.2",
+    "ethers": "^5.7.2",
     "ipfs-core": "^0.17.0",
     "ipfs-http-client": "^59.0.0",
     "omit-deep": "^0.3.0"

@@ -49,7 +49,7 @@ const Header: FC<{
               </a>
               <a
                 className="flex items-start justify-center rounded-md hover:bg-gray-300 p-1 hover:bg-opacity-20 min-w-[40px]"
-                href="/notifications"
+
                 onClick={pushOptIn}
               >
                 <svg
