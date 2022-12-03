@@ -1,4 +1,4 @@
-export const getRecommendedProfiles = `query RecommendedProfiles {
+export const recommendedProfiles = `query RecommendedProfiles {
     recommendedProfiles {
           id
         name
