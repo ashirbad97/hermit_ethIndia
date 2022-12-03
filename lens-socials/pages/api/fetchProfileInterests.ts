@@ -17,15 +17,15 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let userFeed = {}
+  let profileInteresetsList = {}
   try {
     const response = await client
-      .query(getProfileInterests, { req.query.profileId, req.query.limit })
+      .query(getProfileInterests, { req.query.profileId })
       .toPromise();
-    const userFeed = response.data?.publications?.items;
-    return userFeed;
+    const profileInteresetsList = response.data;
+    return profileInteresetsList;
   } catch (error) {
     console.log(`fetchProfileInterests failed due to ` + error);
   }
-  res.status(200).json( userFeed );
+  res.status(200).json( profileInteresetsList );
 }
