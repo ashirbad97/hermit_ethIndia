@@ -16,10 +16,9 @@ const MostFollowedProfils: FC = () => {
 
   return (
     <>
-      <div className="text-white w-auto flex flex-col justify-start">
-        <div className="text-xl">Who to Follow?</div>
-        <div className="flex flex-col">
-          {data.profiles.map((profile: Profile) => (
+      <div className="bg-white rounded-md shadow-md flex flex-col mt-4">
+        <div className="flex flex-col ">
+          {data.profiles.slice(0, 5).map((profile: Profile) => (
             <MiniProfile {...profile} />
           ))}
         </div>

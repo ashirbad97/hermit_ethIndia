@@ -12,20 +12,28 @@ const MiniProfile: FC<Profile> = (profile) => {
   }
   return (
     <>
-      <div className="grid grid-cols-5">
-        <div className="cols-span-1">
-          <Image src={profilePic} width={32} height={32} alt="profile pic" />
+      <div className="grid grid-cols-4 w-full p-4 gap-4">
+        <div className="col-span-1">
+          <Image
+            src={profilePic}
+            width={64}
+            height={64}
+            alt="profile pic"
+            className="rounded-full"
+          />
         </div>
-        <div className="cols-span-3 flex flex-col">
-          <div>{profile.name}</div>
-          <div>@{profile.handle}</div>
+        <div className="col-span-2 flex flex-col">
+          <div className="text-gray-700 font-myriad">{profile.name}</div>
+          <div className="text-gray-400 font-myriad text-sm">
+            @{profile.handle}
+          </div>
         </div>
-        <div className="cols-span-1">
-          <button className="btn bg-emerald-500">
+        <div className="col-span-1">
+          <button className="btn bg-emerald-600 p-2 rounded-md">
             <Image
               alt="follow"
               src={cameraImg}
-              className="h-4 flex items-center justify-center"
+              className="h-6 w-6 flex items-center justify-center"
             />
           </button>
         </div>

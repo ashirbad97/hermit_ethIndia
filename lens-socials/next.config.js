@@ -9,7 +9,14 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["picsum.photos", "lens.infura-ipfs.io", "ipfs.io"],
+    domains: [
+      "picsum.photos",
+      "lens.infura-ipfs.io",
+      "ipfs.io",
+      "avatars.dicebear.com",
+      "avatar.tobi.sh",
+      "statics-mumbai-lens-staging.s3.eu-west-1.amazonaws.com",
+    ],
   },
 };
 

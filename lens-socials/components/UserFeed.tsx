@@ -15,7 +15,7 @@ const UserFeed: FC<{ profileId: string }> = ({ profileId }) => {
 
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col font-myriad">
         {data.userFeed.map((feed: UserFeedType) => (
           <div className="rounded-lg bg-white mt-4 p-6 flex flex-col">
             <div className="grid grid-cols-5">

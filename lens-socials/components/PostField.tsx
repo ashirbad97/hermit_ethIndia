@@ -4,7 +4,7 @@ import Image from "next/image";
 const PostField: FC = () => {
   return (
     <>
-      <div className="container bg-white flex flex-col rounded-lg">
+      <div className="container bg-white flex flex-col rounded-lg shadow-md">
         <div className="p-4 flex gap-6">
           <Image
             src="/img_avatar.png"
@@ -22,8 +22,8 @@ const PostField: FC = () => {
         </div>
         <div className="mt-2 flex flex-row-reverse mr-8 mb-4">
           <button
-            className="cursor-pointer text-white p-4
-           rounded-xl font-bold bg-emerald-500 
+            className="cursor-pointer text-white px-6 py-2
+           rounded-xl font-bold bg-emerald-700 
            btn text-xl"
           >
             Post
