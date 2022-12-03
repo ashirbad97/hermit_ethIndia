@@ -17,15 +17,15 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let userPublicationList = {}
+  let searchResultList = {}
   try {
     const response = await client
-      .query(getProfileSearch, { req.query.profileId, req.query.limit })
+      .query(getProfileSearch, { req.query.searchQuery,req.query.searchType, req.query.limit })
       .toPromise();
-    const userPublicationList = response.data?.publications?.items;
-    return userPublicationList;
+    const searchResultList = response.data;
+    return searchResultList;
   } catch (error) {
     console.log(`fetchProfileSearch failed due to ` + error);
   }
-  res.status(200).json( userPublicationList );
+  res.status(200).json( searchResultList );
 }
