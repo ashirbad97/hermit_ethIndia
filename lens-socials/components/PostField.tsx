@@ -13,14 +13,14 @@ const PostField: FC = () => {
             alt="avatar"
             className="h-16 rounded-full w-16 "
           />
-          <input
+          <textarea
             placeholder="Sup?"
             className="placeholder:text-gray-300 
             text-gray-600
-            outline-none text-3xl font-myriad"
+            outline-none text-xl font-myriad resize-none w-full"
           />
         </div>
-        <div className="mt-2 flex flex-row-reverse mr-8 mb-4">
+        <div className="flex flex-row-reverse mr-8 mb-4">
           <button
             className="cursor-pointer text-white px-6 py-2
            rounded-xl font-bold bg-emerald-700 

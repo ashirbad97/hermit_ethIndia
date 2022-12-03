@@ -1,12 +1,18 @@
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import logo from "../public/logo.svg";
 import Search from "./Search";
 import { loginUser } from "../pages/api/api";
+
 const Header: FC<{
   value: string;
   onChange: (e: any) => void;
 }> = ({ value, onChange }) => {
+  const [signedIn, setSignedIn] = useState<boolean>(false);
+  useEffect(() => {
+    window.localStorage.getItem("accessToken") ? setSignedIn(true) : "";
+  });
+
   return (
     <>
       <header className="sticky top-0 z-10 w-full bg-white border-b font-gotham font-semibold ">
@@ -62,7 +68,7 @@ const Header: FC<{
                 </svg>
               </a>
               <div>
-                {!window.localStorage.getItem("accessToken") && (
+                {!signedIn && (
                   <button
                     onClick={loginUser}
                     className="bg-emerald-600 p-4 text-white"
