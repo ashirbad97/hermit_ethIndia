@@ -1,4 +1,4 @@
-export const getPublications = `
+export const getPublicationsByProfileId = `
   query Publications($profileId: ProfileId!, $limit: LimitScalar) {
     publications(request: {
       profileId: $profileId,
