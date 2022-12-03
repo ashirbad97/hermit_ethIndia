@@ -14,13 +14,13 @@ type Followers = {
     handle: string;
     picture: {
       original: {
-        url: string
-      }
+        url: string;
+      };
     };
     coverPicture: {
       original: {
-        url: string
-      }
+        url: string;
+      };
     };
     stats: {
       totalFollowers: number;
@@ -31,7 +31,7 @@ type Followers = {
       totalPublications: number;
       totalCollects: number;
     };
-  }; 
+  };
 };
 
 type Data = {
@@ -57,9 +57,8 @@ export default async function handler(
       .query(mutualFollowersProfiles, { viewingProfileId, yourProfileId })
       .toPromise();
     mutualFollowersList = response.data.mutualFollowersProfiles.items;
-    console.log();
   } catch (error) {
     console.log(`fetchRecommendedProfiles failed due to ` + error);
   }
-  res.status(200).json( { followers: mutualFollowersList } );
+  res.status(200).json({ followers: mutualFollowersList });
 }

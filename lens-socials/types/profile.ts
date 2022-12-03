@@ -8,6 +8,12 @@ export interface Profile {
       url: string;
     };
   };
+  attributes: {
+    displayTime: string;
+    traitType: string;
+    key: string;
+    value: string;
+  };
   coverPicture: {
     original: {
       url: string;
