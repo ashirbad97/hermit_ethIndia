@@ -3,36 +3,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { profileSearch } from "../../util/queries/getProfileSearch";
 
-type ProfileDetails = {
-  profileId: string;
-  name: string;
-  bio: string;
-  isFollowedByMe: boolean;
-  isFollowing: boolean
-  handle: string;
-  picture: {
-    original: {
-      url: string
-    }
-  };
-  coverPicture: {
-    original: {
-      url: string
-    }
-  };
-  stats: {
-    totalFollowers: number;
-    totalFollowing: number;
-    totalPosts: number;
-    totalComments: number;
-    totalMirrors: number;
-    totalPublications: number;
-    totalCollects: number;
-  };      
-};
+import { Profile } from "../../types/profile";
 
 type Data = {
-  profileDetails: ProfileDetails[];
+  profileDetails: Profile[];
 };
 
 const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
@@ -45,7 +19,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  let profilesList: ProfileDetails[] = [];
+  let profilesList: Profile[] = [];
 
   try {
     let query = req.query.query;

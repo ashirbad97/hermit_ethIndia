@@ -3,34 +3,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { recommendedProfiles } from "../../util/queries/getRecommendedProfiles";
 
-type RecommendedProfile= {
-  id: string;
-  name: string;
-  bio: string;
-  picture: {
-    original: {
-      url: string
-    }
-  }
-  handle: string;
-  coverPicture: {
-    original: {
-      url: string
-    }
-  };
-  stats: {
-    totalFollowers: number;
-    totalFollowing: number;
-    totalPosts: number;
-    totalComments: number;
-    totalMirrors: number;
-    totalPublications: number;
-    totalCollects: number;
-  }; 
-};
+import { Profile } from "../..//types/profile";
+
 
 type Data = {
-  recommendedProfile: RecommendedProfile[];
+  recommendedProfile: Profile[];
 };
 
 const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
@@ -44,7 +21,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let recommendedProfilelist: RecommendedProfile[] = [];
+  let recommendedProfilelist: Profile[] = [];
   try {
 
     const response = await client

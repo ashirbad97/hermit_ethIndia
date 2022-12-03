@@ -3,24 +3,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { publicationsByProfileId } from "../../util/queries/getPublicationsByProfileId";
 
-type UserPublication= {
-  __typename: string;
-  id: string;
-  metadata: {
-    name: string;
-    description: string;
-    content: string;
-    media: Array<{
-      original: {
-        url: string;
-      }
-    }>;
-  };
-  createdAt: string;     
-};
+import { Publication } from "../../types/publication";
+
 
 type Data = {
-  userPublication: UserPublication[];
+  userPublication: Publication[];
 };
 
 const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
@@ -34,7 +21,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let userPublicationList: UserPublication[] = [];
+  let userPublicationList: Publication[] = [];
 
   try {
     let profileId = req.query.profileId;
