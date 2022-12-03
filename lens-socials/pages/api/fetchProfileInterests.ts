@@ -2,8 +2,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { profileInterests } from "../../util/queries/getProfileInterests";
+
+type ProfileInterest = {
+  id: string;
+  interests: Array<any>;     
+};
+
 type Data = {
-  name: string;
+  profileInterest: ProfileInterest[];
 };
 
 const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
@@ -16,22 +22,16 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-
-
-  let profileInteresetsList: {
-    id: string;
-    interests: Array<any>;     
-  };
-
-
+  let profileInteresetsList: ProfileInterest[] = [];
   try {
+    let profileId = req.query.profileId; 
     const response = await client
-      .query(profileInterests, { req.query.profileId })
+      .query(profileInterests, { profileId })
       .toPromise();
-    const profileInteresetsList = response.data.profile;
+    profileInteresetsList = response.data.profile;
     return profileInteresetsList;
   } catch (error) {
     console.log(`fetchProfileInterests failed due to ` + error);
   }
-  res.status(200).json( [profileInteresetsList] );
+  res.status(200).json( {profileInterest: profileInteresetsList} );
 }

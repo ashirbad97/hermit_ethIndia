@@ -2,8 +2,37 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { profileSearch } from "../../util/queries/getProfileSearch";
-type Data = {
+
+type ProfileDetails = {
+  profileId: string;
   name: string;
+  bio: string;
+  isFollowedByMe: boolean;
+  isFollowing: boolean
+  handle: string;
+  picture: {
+    original: {
+      url: string
+    }
+  };
+  coverPicture: {
+    original: {
+      url: string
+    }
+  };
+  stats: {
+    totalFollowers: number;
+    totalFollowing: number;
+    totalPosts: number;
+    totalComments: number;
+    totalMirrors: number;
+    totalPublications: number;
+    totalCollects: number;
+  };      
+};
+
+type Data = {
+  profileDetails: ProfileDetails[];
 };
 
 const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
@@ -16,43 +45,19 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-
-  let profileDetails= Array<{
-    profileId: string;
-    name: string;
-    bio: string;
-    isFollowedByMe: boolean;
-    isFollowing: boolean
-    handle: string;
-    picture: {
-      original: {
-        url: string
-      }
-    };
-    coverPicture: {
-      original: {
-        url: string
-      }
-    };
-    stats: {
-      totalFollowers: number;
-      totalFollowing: number;
-      totalPosts: number;
-      totalComments: number;
-      totalMirrors: number;
-      totalPublications: number;
-      totalCollects: number;
-    };      
-  }>;
+  let profilesList: ProfileDetails[] = [];
 
   try {
+    let query = req.query.query;
+    let type = req.query.type;
+    let limit = req.query.limit;
+    
     const response = await client
-      .query(profileSearch, { req.query.searchQuery,req.query.searchType, req.query.limit })
+      .query(profileSearch, { query, type, limit })
       .toPromise();
-    const searchResultList = response.data.search.__typename["ProfileSearchResult"].items;
-    return searchResultList;
+      profilesList = response.data.search.__typename["ProfileSearchResult"].items;
   } catch (error) {
     console.log(`fetchProfileSearch failed due to ` + error);
   }
-  res.status(200).json( searchResultList );
+  res.status(200).json( {profileDetails: profilesList} );
 }

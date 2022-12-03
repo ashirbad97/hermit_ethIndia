@@ -2,8 +2,25 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { publicationsByProfileId } from "../../util/queries/getPublicationsByProfileId";
+
+type UserPublication= {
+  __typename: string;
+  id: string;
+  metadata: {
+    name: string;
+    description: string;
+    content: string;
+    media: Array<{
+      original: {
+        url: string;
+      }
+    }>;
+  };
+  createdAt: string;     
+};
+
 type Data = {
-  name: string;
+  userPublication: UserPublication[];
 };
 
 const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
@@ -17,30 +34,17 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let userPublicationList= Array<{
-    __typename: string;
-    id: string;
-    metadata: {
-      name: string;
-      description: string;
-      content: string;
-      media: Array<{
-        original: {
-          url: string;
-        }
-      }>;
-    };
-    createdAt: string;     
-  }>;
+  let userPublicationList: UserPublication[] = [];
 
   try {
+    let profileId = req.query.profileId;
+    let limit = req.query.limit;
     const response = await client
-      .query(publicationsByProfileId, { req.query.profileId, req.query.limit })
+      .query(publicationsByProfileId, { profileId, limit })
       .toPromise();
-    const userPublicationList = response.data.publications.items;
-    return userPublicationList;
+    userPublicationList = response.data.publications.items;
   } catch (error) {
     console.log(`fetchPublicationsProfileId failed due to ` + error);
   }
-  res.status(200).json( userPublicationList );
+  res.status(200).json({userPublication: userPublicationList});
 }
