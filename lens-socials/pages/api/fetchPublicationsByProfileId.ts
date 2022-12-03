@@ -17,12 +17,27 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let userPublicationList = {}
+  let userPublicationList= Array<{
+    __typename: string;
+    id: string;
+    metadata: {
+      name: string;
+      description: string;
+      content: string;
+      media: Array<{
+        original: {
+          url: string;
+        }
+      }>;
+    };
+    createdAt: string;     
+  }>;
+
   try {
     const response = await client
       .query(publicationsByProfileId, { req.query.profileId, req.query.limit })
       .toPromise();
-    const userPublicationList = response.data;
+    const userPublicationList = response.data.publications.items;
     return userPublicationList;
   } catch (error) {
     console.log(`fetchPublicationsProfileId failed due to ` + error);

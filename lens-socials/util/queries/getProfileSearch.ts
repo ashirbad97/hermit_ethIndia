@@ -1,4 +1,4 @@
-export const getProfileSearch = `query Search($query:Search!,$type:SearchRequestTypes!,$limit:LimitScalar!) {
+export const profileSearch = `query Search($query:Search!,$type:SearchRequestTypes!,$limit:LimitScalar!) {
     search(request: {
       query: $query,
       type: $type,

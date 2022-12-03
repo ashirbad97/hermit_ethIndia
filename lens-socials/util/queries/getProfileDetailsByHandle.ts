@@ -1,4 +1,4 @@
-export const getProfileDetailsByHandle = `query Profiles($handles:Handle!,$limit:LimitScalar) {
+export const profileDetailsByHandle = `query Profiles($handles:Handle!,$limit:LimitScalar) {
     profiles(request: { handles: [$handles], limit: $limit }) {
       items {
         id

@@ -17,12 +17,43 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let mutualFollowersList = {}
+  let mutualFollowersList: Array<{
+    id: string;
+    profile: {
+      id: string;
+      name: string;
+      bio: string;
+      isFollowedByMe: boolean;
+      isFollowing: string;
+      handle: string;
+      picture: {
+        original: {
+          url: string
+        }
+      };
+      coverPicture: {
+        original: {
+          url: string
+        }
+      };
+      stats: {
+        totalFollowers: number;
+        totalFollowing: number;
+        totalPosts: number;
+        totalComments: number;
+        totalMirrors: number;
+        totalPublications: number;
+        totalCollects: number;
+      };
+    }; 
+
+  }>;
+
   try {
     const response = await client
       .query(mutualFollowersProfiles, { req.query.viewingProfileId, req.query.yourProfileId })
       .toPromise();
-    const mutualFollowersList = response.data;
+    const mutualFollowersList = response.data.mutualFollowersProfiles.items;
     return mutualFollowersList;
   } catch (error) {
     console.log(`fetchRecommendedProfiles failed due to ` + error);

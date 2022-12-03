@@ -13,16 +13,41 @@ export const client = createClient({
 });
 
 export default async function handler(
-  req: NextApiRequest,
+  req: NextApiRequest,  
   res: NextApiResponse<Data>
 ) {
 
-  let recommendedProfilesList = {}
+  let recommendedProfilesList= Array<{
+    id: string;
+    name: string;
+    bio: string;
+    picture: {
+      original: {
+        url: string
+      }
+    }
+    handle: string;
+    coverPicture: {
+      original: {
+        url: string
+      }
+    };
+    stats: {
+      totalFollowers: number;
+      totalFollowing: number;
+      totalPosts: number;
+      totalComments: number;
+      totalMirrors: number;
+      totalPublications: number;
+      totalCollects: number;
+    }; 
+  }>;
+
   try {
     const response = await client
-      .query(recommendedProfiles)
+      .query(recommendedProfiles, {})
       .toPromise();
-    const recommendedProfilesList = response.data;
+    const recommendedProfilesList = response.data.recommendedProfiles;
     return recommendedProfilesList;
   } catch (error) {
     console.log(`fetchRecommendedProfiles failed due to ` + error);

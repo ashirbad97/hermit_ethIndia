@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
-import { getProfileSearch } from "../../util/queries/getProfileSearch";
+import { profileSearch } from "../../util/queries/getProfileSearch";
 type Data = {
   name: string;
 };
@@ -17,12 +17,39 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let searchResultList = {}
+  let profileDetails= Array<{
+    profileId: string;
+    name: string;
+    bio: string;
+    isFollowedByMe: boolean;
+    isFollowing: boolean
+    handle: string;
+    picture: {
+      original: {
+        url: string
+      }
+    };
+    coverPicture: {
+      original: {
+        url: string
+      }
+    };
+    stats: {
+      totalFollowers: number;
+      totalFollowing: number;
+      totalPosts: number;
+      totalComments: number;
+      totalMirrors: number;
+      totalPublications: number;
+      totalCollects: number;
+    };      
+  }>;
+
   try {
     const response = await client
-      .query(getProfileSearch, { req.query.searchQuery,req.query.searchType, req.query.limit })
+      .query(profileSearch, { req.query.searchQuery,req.query.searchType, req.query.limit })
       .toPromise();
-    const searchResultList = response.data;
+    const searchResultList = response.data.search.__typename["ProfileSearchResult"].items;
     return searchResultList;
   } catch (error) {
     console.log(`fetchProfileSearch failed due to ` + error);

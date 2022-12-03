@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
-import { getProfileDetailsByHandle } from "../../util/queries/getProfileDetailsByHandle";
+import { profileDetailsByHandle } from "../../util/queries/getProfileDetailsByHandle";
 type Data = {
   name: string;
 };
@@ -17,12 +17,37 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let profileDetails = {}
+  let profileDetails: Array<{
+      id: string;
+      name: string;
+      bio: string;
+      picture: {
+        original: {
+          url: string
+        }
+      };
+      handle: string;
+      coverPicture: {
+        original: {
+          url: string
+        }
+      };
+      stats: {
+        totalFollowers: number;
+        totalFollowing: number;
+        totalPosts: number;
+        totalComments: number;
+        totalMirrors: number;
+        totalPublications: number;
+        totalCollects: number;
+      };      
+  }>;
+
   try {
     const response = await client
-      .query(getProfileDetailsByHandle, { req.query.handles, req.query.limit })
+      .query(profileDetailsByHandle, { req.query.handles, req.query.limit })
       .toPromise();
-    const profileDetails = response.data;
+    const profileDetails = response.data.profiles.items;
     return profileDetails;
   } catch (error) {
     console.log(`fetchProfileDetailsByHandle failed due to ` + error);
