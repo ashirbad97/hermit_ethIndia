@@ -72,6 +72,9 @@ const Header: FC<{
                 )}
               </div>
             </div>
+            <div>
+              <button onClick={loginUser}>Sign In</button>
+            </div>
           </div>
         </div>
       </header>

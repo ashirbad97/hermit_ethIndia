@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Profile } from "../types/profile";
 import Image from "next/image";
 import cameraImg from "../public/img_camera_28X28.svg";
-
+import { followUser } from "../pages/api/api"
 const MiniProfile: FC<Profile> = (profile) => {
   let profilePic: string = "";
   if (profile.picture?.original?.url != undefined) {
@@ -29,7 +29,7 @@ const MiniProfile: FC<Profile> = (profile) => {
           </div>
         </div>
         <div className="col-span-1">
-          <button className="btn bg-emerald-600 p-2 rounded-md">
+          <button className="btn bg-emerald-600 p-2 rounded-md" onClick={async () => await followUser(profile.id)}>
             <Image
               alt="follow"
               src={cameraImg}
