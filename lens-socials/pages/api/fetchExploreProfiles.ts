@@ -17,12 +17,36 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let profilesList = {}
+  let profilesList: Array<{
+    id: string;
+    name: string;
+    bio:string; 
+    handle: string;
+    picture: {
+      original: {
+        url: string;
+      }
+    };
+    coverPicture: {
+      original: {
+        url: string;
+      }
+    };
+    stats: {
+      totalFollowers: number;
+      totalFollowing: number;
+      totalPosts: number;
+      totalComments: number;
+      totalMirrors: number;
+      totalPublications: number;
+      totalCollects: number;
+    };
+  }>
   try {
     const response = await client
       .query(exploreProfiles, { req.query.sortCriteria })
       .toPromise();
-    const profilesList = response.data;
+    const profilesList = response.data.exploreProfiles.items;
     return profilesList;
   } catch (error) {
     console.log(`fetchExploreProfiles failed due to ` + error);
