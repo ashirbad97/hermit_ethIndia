@@ -15,31 +15,37 @@ const UserFeed: FC<{ profileId: string }> = ({ profileId }) => {
 
   return (
     <>
-      <div className="flex flex-col font-myriad">
+      <div className="flex flex-col font-myriad mb-8">
         {data.userFeed.map((feed: UserFeedType) => (
           <div className="rounded-lg bg-white mt-4 p-6 flex flex-col">
-            <div className="grid grid-cols-5">
+            <div className="flex gap-4">
               <Image
                 src={
                   feed.root.profile.picture?.original.url != undefined &&
                   (feed.root.profile.picture?.original?.url).includes("ipfs://")
                     ? "https://ipfs.io/" +
                       feed.root.profile.picture?.original?.url.replace(":/", "")
+                    : feed.root.profile.picture?.original?.url === undefined
+                    ? "https://picsum.photos/64"
                     : feed.root.profile.picture?.original?.url
                 }
                 alt="profile image"
-                width={32}
-                height={32}
-                className="col-span-1"
+                width={64}
+                height={64}
+                objectFit="contain"
+                className="col-span-1 rounded-full w-20"
               />
-              <div className="text-lg font-semibold col-span-3 flex flex-col">
-                <div>{feed.root.profile.name}</div>
-                <div>{feed.root.profile.handle}</div>
+              <div className=" justify-center col-span-4 flex flex-col">
+                <div className="text-emerald-800 font-semibold text-lg">
+                  {feed.root.profile.name}
+                </div>
+                <div className="text-sm text-gray-400">
+                  @{feed.root.profile.handle}
+                </div>
+                <div className="text-gray-800 mt-4 text-lg">
+                  {feed.root.metadata.description}
+                </div>
               </div>
-              <div className="col-span-1">opt</div>
-            </div>
-            <div className="text-gray-400">
-              {feed.root.metadata.description}
             </div>
           </div>
         ))}
