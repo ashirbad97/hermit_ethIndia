@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Myriad Pro";
+  src: url("/fonts/MYRIADPRO-REGULAR.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Myriad Pro";
+  src: url("/fonts/MYRIADPRO-BOLD.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/GothamRnd-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/GothamRnd-Book.woff") format("woff");
+  font-weight: normal;
+  font-style: nomal;
+}
+
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/GothamRnd-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Gotham Rounded";
+  src: url("/fonts/GothamRnd-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
 html,
 body {
   padding: 0;

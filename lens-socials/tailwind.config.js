@@ -9,6 +9,10 @@ module.exports = {
       colors: {
         brand: "#666aec",
       },
+      fontFamily: {
+        myriad: ["Myriad Pro"],
+        gotham: ["Gotham Rounded"],
+      },
     },
   },
   plugins: [],
