@@ -17,15 +17,15 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let userPublicationList = {}
+  let profileDetails = {}
   try {
     const response = await client
-      .query(getProfileDetailsByHandle, { req.query.profileId, req.query.limit })
+      .query(getProfileDetailsByHandle, { req.query.handles, req.query.limit })
       .toPromise();
-    const userPublicationList = response.data?.publications?.items;
-    return userPublicationList;
+    const profileDetails = response.data;
+    return profileDetails;
   } catch (error) {
     console.log(`fetchProfileDetailsByHandle failed due to ` + error);
   }
-  res.status(200).json( userPublicationList );
+  res.status(200).json( profileDetails );
 }
