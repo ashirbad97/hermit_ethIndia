@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import logo from "../public/logo.svg";
 import Search from "./Search";
 import { loginUser } from "../pages/api/api";
-import { pushOptIn } from "../pages/api/api"
+import { pushOptIn } from "../pages/api/api";
 const Header: FC<{
   value: string;
   onChange: (e: any) => void;
@@ -78,9 +78,6 @@ const Header: FC<{
                   </button>
                 )}
               </div>
-            </div>
-            <div>
-              <button onClick={loginUser}>Sign In</button>
             </div>
           </div>
         </div>

@@ -1,8 +1,9 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Profile } from "../types/profile";
 import Image from "next/image";
 import cameraImg from "../public/img_camera_28X28.svg";
 import { followUser } from "../pages/api/api";
+
 const MiniProfile: FC<Profile> = (profile) => {
   let profilePic: string = "";
   if (profile.picture?.original?.url != undefined) {
@@ -10,6 +11,8 @@ const MiniProfile: FC<Profile> = (profile) => {
       ? "https://ipfs.io/" + profile.picture?.original?.url.replace(":/", "")
       : profile.picture?.original?.url;
   }
+  const [followed, setFollowed] = useState<boolean>(false);
+
   return (
     <>
       <div className="grid grid-cols-4 w-full p-4 ml-4 mt-2">
@@ -32,16 +35,34 @@ const MiniProfile: FC<Profile> = (profile) => {
         </div>
 
         <div className="col-span-1 my-auto">
-          <button
-            className="btn bg-emerald-600 p-2 rounded-md"
-            onClick={async () => await followUser(profile.id)}
-          >
-            <Image
-              alt="follow"
-              src={cameraImg}
-              className="h-6 w-6 flex items-center justify-center"
-            />
-          </button>
+          {!followed && (
+            <button
+              className="btn bg-emerald-600 p-2 rounded-md"
+              onClick={async () => await followUser(profile.id)}
+            >
+              <Image
+                alt="follow"
+                src={cameraImg}
+                className="h-6 w-6 flex items-center justify-center"
+              />
+            </button>
+          )}
+          {followed && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#047857"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4.5 12.75l6 6 9-13.5"
+              />
+            </svg>
+          )}
         </div>
       </div>
     </>
