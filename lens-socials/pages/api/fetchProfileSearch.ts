@@ -55,7 +55,7 @@ export default async function handler(
     const response = await client
       .query(profileSearch, { query, type, limit })
       .toPromise();
-      profilesList = response.data.search.__typename["ProfileSearchResult"].items;
+      profilesList = response.data.search.items;
   } catch (error) {
     console.log(`fetchProfileSearch failed due to ` + error);
   }
