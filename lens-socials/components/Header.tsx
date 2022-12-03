@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FC } from "react";
 import logo from "../public/logo.svg";
 import Search from "./Search";
-
+import { loginUser } from "../pages/api/api";
 const Header: FC<{
   value: string;
   onChange: (e: any) => void;
@@ -61,6 +61,16 @@ const Header: FC<{
                   ></path>
                 </svg>
               </a>
+              <div>
+                {!window.localStorage.getItem("accessToken") && (
+                  <button
+                    onClick={loginUser}
+                    className="bg-emerald-600 p-4 text-white"
+                  >
+                    Sign In
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
