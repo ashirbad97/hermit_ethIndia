@@ -3,36 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { mutualFollowersProfiles } from "../../util/queries/getMutualFollowersProfiles";
 
-type Followers = {
-  id: string;
-  profile: {
-    id: string;
-    name: string;
-    bio: string;
-    isFollowedByMe: boolean;
-    isFollowing: string;
-    handle: string;
-    picture: {
-      original: {
-        url: string;
-      };
-    };
-    coverPicture: {
-      original: {
-        url: string;
-      };
-    };
-    stats: {
-      totalFollowers: number;
-      totalFollowing: number;
-      totalPosts: number;
-      totalComments: number;
-      totalMirrors: number;
-      totalPublications: number;
-      totalCollects: number;
-    };
-  };
-};
+import { Followers } from "../../types/followers"
 
 type Data = {
   followers: Followers[];

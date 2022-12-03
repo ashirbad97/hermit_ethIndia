@@ -3,10 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { profileInterests } from "../../util/queries/getProfileInterests";
 
-type ProfileInterest = {
-  id: string;
-  interests: Array<any>;     
-};
+import { ProfileInterest } from "../../types/profileInterest";
 
 type Data = {
   profileInterest: ProfileInterest[];

@@ -1,7 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
-import { Profile } from "../../types/profile";
 import { userFeed } from "../../util/queries/getUserFeed";
 import type { UserFeed } from "../../types/userFeed";
 
