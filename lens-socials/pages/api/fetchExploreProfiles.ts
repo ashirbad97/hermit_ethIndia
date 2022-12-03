@@ -2,32 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { exploreProfiles } from "../../util/queries/getExploreProfiles";
+import { Profile } from "../../types/profile";
 
-type Profile = {
-  id: string;
-  name: string;
-  bio: string;
-  handle: string;
-  picture: {
-    original: {
-      url: string;
-    };
-  };
-  coverPicture: {
-    original: {
-      url: string;
-    };
-  };
-  stats: {
-    totalFollowers: number;
-    totalFollowing: number;
-    totalPosts: number;
-    totalComments: number;
-    totalMirrors: number;
-    totalPublications: number;
-    totalCollects: number;
-  };
-};
 type Data = {
   profiles: Profile[];
 };
