@@ -2,8 +2,58 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { explorePublications } from "../../util/queries/getExplorePublications";
+
+
+
+type Publication = {
+  __typename: string;
+  id: string;
+  profile: {
+    id: string;
+    name: string;
+    bio: string;
+    isFollowedByMe: boolean;
+    isFollowing: string;
+    handle: string;
+    picture: {
+      original: {
+        url: string
+      }
+    };
+    coverPicture: {
+      original: {
+        url: string
+      }
+    };
+    stats: {
+      totalFollowers: number;
+      totalFollowing: number;
+      totalPosts: number;
+      totalComments: number;
+      totalMirrors: number;
+      totalPublications: number;
+      totalCollects: number;
+    };
+  }; 
+  stats: {
+    totalAmountOfMirrors: number;
+    totalAmountOfCollects: number;
+    totalAmountOfComments: number;
+  };
+  metadata: {
+      name: string;
+      description: string;
+      content: string;
+      media: Array<any>
+  };
+  createdAt: string;
+  reaction: any;
+  mirrors: Array<any>;
+  hasCollectedByMe: boolean;
+};
+
 type Data = {
-  name: string;
+  publications: Publication[];
 };
 
 const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
@@ -17,61 +67,17 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
 
-  let publicationList: Array<{
-    __typename: string;
-    id: string;
-    profile: {
-      id: string;
-      name: string;
-      bio: string;
-      isFollowedByMe: boolean;
-      isFollowing: string;
-      handle: string;
-      picture: {
-        original: {
-          url: string
-        }
-      };
-      coverPicture: {
-        original: {
-          url: string
-        }
-      };
-      stats: {
-        totalFollowers: number;
-        totalFollowing: number;
-        totalPosts: number;
-        totalComments: number;
-        totalMirrors: number;
-        totalPublications: number;
-        totalCollects: number;
-      };
-    }; 
-    stats: {
-      totalAmountOfMirrors: number;
-      totalAmountOfCollects: number;
-      totalAmountOfComments: number;
-    };
-    metadata: {
-        name: string;
-        description: string;
-        content: string;
-        media: Array<any>
-    };
-    createdAt: string;
-    reaction: any;
-    mirrors: Array<any>;
-    hasCollectedByMe: boolean;
-  }>;
-
+  let publicationList: Publication[] = [];
+  
   try {
+    let sortCriteria = req.query.sortCriteria;
+    let limit = req.query.limit;
     const response = await client
-      .query(explorePublications, { req.query.sortCriteria, req.query.limit })
+      .query(explorePublications, { sortCriteria, limit })
       .toPromise();
-    const publicationList = response.data.explorePublications.items;
-    return publicationList;
+    publicationList = response.data.explorePublications.items;
   } catch (error) {
     console.log(`fetchExplorePublications failed due to ` + error);
   }
-  res.status(200).json( publicationList );
+  res.status(200).json( { publications: publicationList});
 }

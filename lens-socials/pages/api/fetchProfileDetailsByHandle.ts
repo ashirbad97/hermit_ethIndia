@@ -2,8 +2,35 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { profileDetailsByHandle } from "../../util/queries/getProfileDetailsByHandle";
-type Data = {
+
+type ProfileDetails = {
+  id: string;
   name: string;
+  bio: string;
+  picture: {
+    original: {
+      url: string
+    }
+  };
+  handle: string;
+  coverPicture: {
+    original: {
+      url: string
+    }
+  };
+  stats: {
+    totalFollowers: number;
+    totalFollowing: number;
+    totalPosts: number;
+    totalComments: number;
+    totalMirrors: number;
+    totalPublications: number;
+    totalCollects: number;
+  };      
+};
+
+type Data = {
+  profileDetails: ProfileDetails[];
 };
 
 const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
@@ -16,41 +43,18 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-
-  let profileDetails: Array<{
-      id: string;
-      name: string;
-      bio: string;
-      picture: {
-        original: {
-          url: string
-        }
-      };
-      handle: string;
-      coverPicture: {
-        original: {
-          url: string
-        }
-      };
-      stats: {
-        totalFollowers: number;
-        totalFollowing: number;
-        totalPosts: number;
-        totalComments: number;
-        totalMirrors: number;
-        totalPublications: number;
-        totalCollects: number;
-      };      
-  }>;
-
+  let profileDetailsList: ProfileDetails[] = [];
+ 
   try {
+    let handles = req.query.handles;
+    let limit = req.query.limit;
     const response = await client
-      .query(profileDetailsByHandle, { req.query.handles, req.query.limit })
+      .query(profileDetailsByHandle, { handles })
       .toPromise();
-    const profileDetails = response.data.profiles.items;
-    return profileDetails;
-  } catch (error) {
+    console.dir(response)
+      profileDetailsList = response.data.profiles.items;
+  } catch (error) { 
     console.log(`fetchProfileDetailsByHandle failed due to ` + error);
   }
-  res.status(200).json( profileDetails );
+  res.status(200).json( {profileDetails: profileDetailsList} );
 }

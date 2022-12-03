@@ -42,11 +42,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  let profilesList: Profile[];
+  let profilesList: Profile[] = [];
   try {
-    let sort_criteria = req.query.sortCriteria;
+    let sortCriteria = req.query.sortCriteria;
     const response = await client
-      .query(exploreProfiles, { sortCriteria: sort_criteria })
+      .query(exploreProfiles, { sortCriteria })
       .toPromise();
     profilesList = response.data.exploreProfiles.items;
   } catch (error) {
