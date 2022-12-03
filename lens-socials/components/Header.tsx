@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FC } from "react";
 import logo from "../public/logo.svg";
 import Search from "./Search";
-
+import { loginUser } from "../pages/api/api"
 const Header: FC<{
   value: string;
   onChange: (e: any) => void;
@@ -61,6 +61,9 @@ const Header: FC<{
                   ></path>
                 </svg>
               </a>
+            </div>
+            <div>
+              <button onClick={loginUser}>Sign In</button>
             </div>
           </div>
         </div>
