@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import logo from "../public/logo.svg";
 import Search from "./Search";
 import { loginUser } from "../pages/api/api";
-import { pushOptIn } from "../pages/api/api";
+import { pushOptIn, sendPushNotification } from "../pages/api/api";
 const Header: FC<{
   value: string;
   onChange: (e: any) => void;
@@ -11,6 +11,7 @@ const Header: FC<{
   const [signedIn, setSignedIn] = useState<boolean>(false);
   useEffect(() => {
     window.localStorage.getItem("accessToken") ? setSignedIn(true) : "";
+
   });
 
   return (
@@ -49,7 +50,6 @@ const Header: FC<{
               </a>
               <a
                 className="flex items-start justify-center rounded-md hover:bg-gray-300 p-1 hover:bg-opacity-20 min-w-[40px]"
-                href="/notifications"
                 onClick={pushOptIn}
               >
                 <svg
