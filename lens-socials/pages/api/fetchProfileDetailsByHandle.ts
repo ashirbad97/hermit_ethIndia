@@ -27,7 +27,7 @@ export default async function handler(
     const response = await client
       .query(profileDetailsByHandle, { handles })
       .toPromise();
-    console.dir(response)
+   
       profileDetailsList = response.data.profiles.items;
   } catch (error) { 
     console.log(`fetchProfileDetailsByHandle failed due to ` + error);

@@ -5,7 +5,6 @@ import { explorePublications } from "../../util/queries/getExplorePublications";
 
 import { Publication } from "../../types/publication";
 
-
 type Data = {
   publications: Publication[];
 };
