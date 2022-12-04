@@ -1,9 +1,6 @@
 import { createClient } from "urql";
 import { ethers } from "ethers";
-import * as IPFS from "ipfs-core";
-import { create } from "ipfs-http-client";
 import mumbaiTestnetAbi from "./mumbaiTestnetAbi.json";
-import omitDeep from "omit-deep";
 import * as PushAPI from "@pushprotocol/restapi";
 
 // const APIURL = `https://api.lens.dev`
