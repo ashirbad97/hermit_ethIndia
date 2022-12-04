@@ -14,7 +14,7 @@ const ProfilePublications: FC<{ profileId: string }> = ({ profileId }) => {
 
   return (
     <>
-      <div className="flex flex-col font-myriad mb-8 container mx-auto">
+      <div className="flex flex-col font-myriad pb-4 container mx-auto">
         {data.userPublication?.map((publication: PublicationType) => (
           <div className="rounded-lg bg-white mt-4 p-6 flex flex-col">
             <div className="flex gap-4">

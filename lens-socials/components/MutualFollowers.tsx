@@ -19,7 +19,7 @@ const MutualFollowers: FC<{
 
   return (
     <>
-      <div className="bg-white rounded-md shadow-md flex flex-col mt-4 container mx-auto w-[30%] h-96 overflow-scroll">
+      <div className="bg-white rounded-md shadow-md flex flex-col mt-4 container mx-auto w-[30%] max-h-96 overflow-scroll">
         <div className="flex flex-col ">
           {data.followers.map((profile: Profile) => (
             <MiniProfile {...profile} />

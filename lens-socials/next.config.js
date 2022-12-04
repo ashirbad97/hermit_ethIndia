@@ -19,6 +19,7 @@ const nextConfig = {
       "cdn.stamp.fyi",
       "bafybeifiw5y4fowyuonetx3u3pufj5y46b3e5zkr4ld25u4et2n4opueni.ipfs.w3s.link",
       "pbs.twimg.com",
+      "cdn.stamp.fyi",
     ],
   },
 };

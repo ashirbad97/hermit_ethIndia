@@ -80,12 +80,13 @@ const OtherUserProfile: FC<{ profile: Profile }> = ({ profile }) => {
 
         <div className="text-white flex flex-col justify-start">
           <div className="flex flex-col">
-            <div className="h-80">
+            <div className="h-48">
               <Image
-                className="rounded-md"
+                className="h-96"
                 src={coverPic}
                 width={1600}
-                height={450}
+                height={100}
+                objectFit="cover"
                 alt={profile.name}
               />
             </div>
