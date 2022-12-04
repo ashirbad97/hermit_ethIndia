@@ -82,11 +82,10 @@ const OtherUserProfile: FC<{ profile: Profile }> = ({ profile }) => {
           <div className="flex flex-col">
             <div className="h-48">
               <Image
-                className="h-96"
+                className="h-96 object-cover object-center"
                 src={coverPic}
                 width={1600}
                 height={100}
-                objectFit="cover"
                 alt={profile.name}
               />
             </div>
@@ -110,7 +109,7 @@ const OtherUserProfile: FC<{ profile: Profile }> = ({ profile }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 container mx-auto text-emerald-900">
+          <div className="grid grid-cols-2 gap-4 container mx-auto text-emerald-900 mt-2">
             <div className="col-span-1 flex flex-row-reverse">
               <div>
                 <span className="font-bold">
