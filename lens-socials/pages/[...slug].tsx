@@ -10,7 +10,7 @@ import type { Profile } from "../types/profile";
 import ProfilePublications from "../components/ProfilePublications";
 import { GetStaticPaths, GetStaticProps } from "next/types";
 import { profileDetailsByHandle } from "../util/queries/getProfileDetailsByHandle";
-import { connectWallet } from "./api/api";
+import { connectWallet, followUser } from "./api/api";
 
 import { Chat } from "@pushprotocol/uiweb";
 
@@ -142,6 +142,16 @@ const OtherUserProfile: FC<{ profile: Profile }> = ({ profile }) => {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="flex justify-center mt-4 mb -4">
+          <button
+            className="btn rounded-lg p-3 text-2xl font-gotham text-white bg-emerald-800"
+            onClick={() => followUser(profile.id, profile.ownedBy)}
+          >
+            {" "}
+            Follow
+          </button>
         </div>
 
         <div className="flex justify-center items-center flex-col">

@@ -118,7 +118,7 @@ export const loginUser = async () => {
   }
 };
 // Follows the userprofile, This will be passed as a prop to the Individual User component
-export async function followUser(followersId) {
+export async function followUser(followersId, followerAddress = "") {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   const contract = new ethers.Contract(
@@ -131,7 +131,8 @@ export async function followUser(followersId) {
     const tx = await contract.follow([followersId], [0x0]); //This will trigger a Metamask prompt to see if you actually want to sign the transaction
     await tx.wait(); //wait for the transaction to go through
     // This will run if the above line went through, replace this with some better event handling
-    console.log("Successfully Followed the User");
+    console.log("Successfully followed the User");
+    await sendPushNotification(followerAddress);
     return true;
   } catch (error) {
     console.log(error);
@@ -157,15 +158,12 @@ export const pushOptIn = async () => {
         env: "staging",
       });
     }
-    await sendPushNotification();
   } catch (error) {
     console.log(error);
   }
 };
 // Check Sending Notification
-export const sendPushNotification = async (
-  targetUserAddress = "0xB16C93cb45553bB442812034981FE44446Fd776B"
-) => {
+export const sendPushNotification = async (targetUserAddress) => {
   try {
     // Configure to send the identity of the person following you
     const PK = process.env.NEXT_PUBLIC_PRIVATE_KEY;
@@ -178,10 +176,10 @@ export const sendPushNotification = async (
       identityType: 2, // direct payload
       notification: {
         title: `A New Follower `,
-        body: `ashirbad followed you`, //mention identity of the person following you
+        body: `someone followed you`, //mention identity of the person following you
       },
       payload: {
-        title: `ashirbad just followed you`,
+        title: `someone just followed you`,
         body: `you are being followed on chashma`,
         cta: "",
         img: "",
