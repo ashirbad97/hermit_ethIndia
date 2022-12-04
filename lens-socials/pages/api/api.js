@@ -4,6 +4,8 @@ import * as IPFS from "ipfs-core";
 import { create } from "ipfs-http-client";
 import mumbaiTestnetAbi from "./mumbaiTestnetAbi.json";
 import omitDeep from "omit-deep";
+import * as PushAPI from "@pushprotocol/restapi";
+
 // const APIURL = `https://api.lens.dev`
 const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
 const CHANNEL_ADDRESS = "0x5a4F5B1661BB975Ded33b8c6BbA62CCaeE2578C3";
@@ -155,7 +157,40 @@ export const pushOptIn = async () => {
         env: "staging",
       });
     }
+    await sendPushNotification()
   } catch (error) {
     console.log(error);
   }
 };
+// Check Sending Notification 
+export const sendPushNotification = async (targetUserAddress = "0xB16C93cb45553bB442812034981FE44446Fd776B") => {
+  try {
+    // Configure to send the identity of the person following you
+    const PK = process.env.PRIVATE_KEY;
+    const Pkey = `0x${PK}`;
+    const signer = new ethers.Wallet(Pkey);
+    // apiResponse?.status === 204, if sent successfully!
+    const apiResponse = await PushAPI.payloads.sendNotification({
+      signer,
+      type: 3, // target
+      identityType: 2, // direct payload
+      notification: {
+        title: `A New Follower `,
+        body: `ashirbad followed you` //mention identity of the person following you
+      },
+      payload: {
+        title: `ashirbad just followed you`,
+        body: `you are being followed on chashma`,
+        cta: '',
+        img: ''
+      },
+      recipients: `eip155:80001:${targetUserAddress}`, // recipient address
+      channel: `eip155:80001:${CHANNEL_ADDRESS}`, // your channel address
+      env: 'staging'
+    });
+    console.log(apiResponse.status)
+
+  } catch (error) {
+    console.log(error)
+  }
+}
