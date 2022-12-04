@@ -20,9 +20,9 @@ const Header: FC<{
         <div className="container px-5 mx-auto max-screen-xl">
           <div className="flex relative justify-between items-center h-14">
             <div className="flex justify-start items-center gap-x-4">
-              <a href="/">
+              <Link href="/">
                 <Image src={logo} alt="logo" className="w-8 h-8" />
-              </a>
+              </Link>
               <Search value={value} onChange={onChange} />
               <Link href="/">
                 <div className="">Home</div>
