@@ -7,6 +7,7 @@ import Image from "next/image";
 import MutualFollowers from "../components/MutualFollowers";
 
 import { Profile } from "../types/profile";
+import ProfilePublications from "../components/ProfilePublications";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -30,7 +31,9 @@ const UserProfile: FC = () => {
   
 
   // fetching the profileID from fetched data to get the mutual followers
-  const viewingProfileId: string = data?.profileDetails[0].id;
+  // const viewingProfileId: string = data?.profileDetails[0].id;
+
+  const viewingProfileId = "0x15";
 
   let profilePic: string = "";
   if (data?.profileDetails[0]?.picture?.original?.url != undefined) {
@@ -123,6 +126,8 @@ console.log(coverPic);
 
         </div>
       </div>
+
+      <ProfilePublications viewingProfileId={viewingProfileId} />
 
     </div>
     </>
