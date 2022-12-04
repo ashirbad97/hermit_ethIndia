@@ -5,9 +5,12 @@ import MiniProfile from "./MiniProfile";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-const MostFollowedProfiles: FC = () => {
+const MutualFollowers: FC<{
+  viewingProfileId: string;
+  yourProfileId: string;
+}> = ({ viewingProfileId, yourProfileId }) => {
   const { data, error } = useSWR(
-    "/api/fetchExploreProfiles?sortCriteria=MOST_FOLLOWERS",
+    `/api/fetchMutualFollowersProfiles?viewingProfileId=${viewingProfileId}&yourProfileId=${yourProfileId}`,
     fetcher
   );
 
@@ -16,9 +19,9 @@ const MostFollowedProfiles: FC = () => {
 
   return (
     <>
-      <div className="bg-white rounded-md shadow-md flex flex-col mt-4">
+      <div className="bg-white rounded-md shadow-md flex flex-col mt-4 container mx-auto w-[30%] h-96 overflow-scroll">
         <div className="flex flex-col ">
-          {data.profiles.slice(0, 5).map((profile: Profile) => (
+          {data.followers.map((profile: Profile) => (
             <MiniProfile {...profile} />
           ))}
         </div>
@@ -27,4 +30,4 @@ const MostFollowedProfiles: FC = () => {
   );
 };
 
-export default MostFollowedProfiles;
+export default MutualFollowers;

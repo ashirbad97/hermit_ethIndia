@@ -4,6 +4,7 @@ import logo from "../public/logo.svg";
 import Search from "./Search";
 import { loginUser } from "../pages/api/api";
 import { pushOptIn, sendPushNotification } from "../pages/api/api";
+import Link from "next/link";
 const Header: FC<{
   value: string;
   onChange: (e: any) => void;
@@ -11,7 +12,6 @@ const Header: FC<{
   const [signedIn, setSignedIn] = useState<boolean>(false);
   useEffect(() => {
     window.localStorage.getItem("accessToken") ? setSignedIn(true) : "";
-
   });
 
   return (
@@ -24,8 +24,9 @@ const Header: FC<{
                 <Image src={logo} alt="logo" className="w-8 h-8" />
               </a>
               <Search value={value} onChange={onChange} />
-              <a>Home</a>
-              <a>Explore</a>
+              <Link href="/">
+                <div className="">Home</div>
+              </Link>
             </div>
             <div className="flex items-center gap-4">
               <a
