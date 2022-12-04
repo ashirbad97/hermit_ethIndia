@@ -157,16 +157,18 @@ export const pushOptIn = async () => {
         env: "staging",
       });
     }
-    await sendPushNotification()
+    await sendPushNotification();
   } catch (error) {
     console.log(error);
   }
 };
-// Check Sending Notification 
-export const sendPushNotification = async (targetUserAddress = "0xB16C93cb45553bB442812034981FE44446Fd776B") => {
+// Check Sending Notification
+export const sendPushNotification = async (
+  targetUserAddress = "0xB16C93cb45553bB442812034981FE44446Fd776B"
+) => {
   try {
     // Configure to send the identity of the person following you
-    const PK = process.env.PRIVATE_KEY;
+    const PK = process.env.NEXT_PUBLIC_PRIVATE_KEY;
     const Pkey = `0x${PK}`;
     const signer = new ethers.Wallet(Pkey);
     // apiResponse?.status === 204, if sent successfully!
@@ -176,21 +178,20 @@ export const sendPushNotification = async (targetUserAddress = "0xB16C93cb45553b
       identityType: 2, // direct payload
       notification: {
         title: `A New Follower `,
-        body: `ashirbad followed you` //mention identity of the person following you
+        body: `ashirbad followed you`, //mention identity of the person following you
       },
       payload: {
         title: `ashirbad just followed you`,
         body: `you are being followed on chashma`,
-        cta: '',
-        img: ''
+        cta: "",
+        img: "",
       },
       recipients: `eip155:80001:${targetUserAddress}`, // recipient address
       channel: `eip155:80001:${CHANNEL_ADDRESS}`, // your channel address
-      env: 'staging'
+      env: "staging",
     });
-    console.log(apiResponse.status)
-
+    console.log(apiResponse.status);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
