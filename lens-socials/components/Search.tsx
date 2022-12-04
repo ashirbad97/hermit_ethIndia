@@ -1,5 +1,5 @@
 import { FC, SyntheticEvent, useState } from "react";
-
+import { fetchProfileSearch } from "../pages/api/api"
 const Search: FC<{
   value: string;
   onChange: (e: any) => void;

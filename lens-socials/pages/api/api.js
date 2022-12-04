@@ -32,6 +32,118 @@ export const authChallenge = `query Challenge($address:EthereumAddress!) {
     }
   }
   `;
+export const profileSearch = `query Search($query:Search!,$type:SearchRequestTypes!,$limit:LimitScalar!) {
+    search(request: {
+      query: $query,
+      type: $type,
+      limit: $limit
+    }) {
+      ... on ProfileSearchResult {
+        __typename 
+        items {
+          ... on Profile {
+            ...ProfileFields
+          }
+        }
+        pageInfo {
+          prev
+          totalCount
+          next
+        }
+      }
+    }
+  }
+  
+  fragment MediaFields on Media {
+    url
+    mimeType
+  }
+  
+  fragment ProfileFields on Profile {
+    profileId: id,
+    name
+    bio
+    attributes {
+      displayType
+      traitType
+      key
+      value
+    }
+    isFollowedByMe
+    isFollowing(who: null)
+    followNftAddress
+    metadata
+    isDefault
+    handle
+    picture {
+      ... on NftImage {
+        contractAddress
+        tokenId
+        uri
+        verified
+      }
+      ... on MediaSet {
+        original {
+          ...MediaFields
+        }
+      }
+    }
+    coverPicture {
+      ... on NftImage {
+        contractAddress
+        tokenId
+        uri
+        verified
+      }
+      ... on MediaSet {
+        original {
+          ...MediaFields
+        }
+      }
+    }
+    ownedBy
+    dispatcher {
+      address
+    }
+    stats {
+      totalFollowers
+      totalFollowing
+      totalPosts
+      totalComments
+      totalMirrors
+      totalPublications
+      totalCollects
+    }
+    followModule {
+      ... on FeeFollowModuleSettings {
+      type
+      amount {
+        asset {
+          name
+          symbol
+          decimals
+          address
+        }
+        value
+      }
+      recipient
+      }
+      ... on ProfileFollowModuleSettings {
+        type
+        contractAddress
+      }
+      ... on RevertFollowModuleSettings {
+        type
+        contractAddress
+      }
+      ... on UnknownFollowModuleSettings {
+        type
+        contractAddress
+        followModuleReturnData
+      }
+    }
+  }
+  `;
 // GraphQL Mutations
 export const mut_authentication = `mutation Authenticate ($address:EthereumAddress!,$signature:Signature!){
     authenticate(request: {
@@ -193,5 +305,25 @@ export const sendPushNotification = async (
     console.log(apiResponse.status);
   } catch (error) {
     console.log(error);
+  }
+};
+/**
+ * @dev
+ * Def: Fetches the profile search details by text input
+ * Relevant for profile searching
+ */
+export const fetchProfileSearch = async (
+  query,
+  type = "PROFILE",
+  limit = 5
+) => {
+  try {
+    const response = await client
+      .query(profileSearch, { query, type, limit })
+      .toPromise();
+    const profileSearchResult = response.data.search?.items;
+    return profileSearchResult;
+  } catch (error) {
+    console.log(`fetchProfileSearch failed due to ` + error);
   }
 };
