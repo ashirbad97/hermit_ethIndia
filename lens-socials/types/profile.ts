@@ -28,4 +28,5 @@ export interface Profile {
     totalPublications: number;
     totalCollects: number;
   };
+  ownedBy: string;
 }

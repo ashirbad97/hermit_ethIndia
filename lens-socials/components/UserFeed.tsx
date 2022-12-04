@@ -2,6 +2,7 @@ import { FC } from "react";
 import type { UserFeed as UserFeedType } from "../types/userFeed";
 import useSWR from "swr";
 import Image from "next/image";
+import Link from "next/link";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const UserFeed: FC<{ profileId: string }> = ({ profileId }) => {
@@ -35,17 +36,19 @@ const UserFeed: FC<{ profileId: string }> = ({ profileId }) => {
                 objectFit="contain"
                 className="col-span-1 rounded-full w-20"
               />
-              <div className=" justify-center col-span-4 flex flex-col">
-                <div className="text-emerald-800 font-semibold text-lg">
-                  {feed.root.profile.name}
+              <Link href={`/${feed.root.profile.handle}`}>
+                <div className=" justify-center col-span-4 flex flex-col">
+                  <div className="text-emerald-800 font-semibold text-lg">
+                    {feed.root.profile.name}
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    @{feed.root.profile.handle}
+                  </div>
+                  <div className="text-gray-800 mt-4 text-lg">
+                    {feed.root.metadata.description}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-400">
-                  @{feed.root.profile.handle}
-                </div>
-                <div className="text-gray-800 mt-4 text-lg">
-                  {feed.root.metadata.description}
-                </div>
-              </div>
+              </Link>
             </div>
           </div>
         ))}

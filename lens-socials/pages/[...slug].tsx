@@ -1,7 +1,6 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import Head from "next/head";
 import Header from "../components/Header";
-import useSWR from "swr";
 import Image from "next/image";
 import { createClient } from "urql";
 
@@ -11,11 +10,21 @@ import type { Profile } from "../types/profile";
 import ProfilePublications from "../components/ProfilePublications";
 import { GetStaticPaths, GetStaticProps } from "next/types";
 import { profileDetailsByHandle } from "../util/queries/getProfileDetailsByHandle";
+import { connectWallet } from "./api/api";
+
+import { Chat } from "@pushprotocol/uiweb";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const OtherUserProfile: FC<{ profile: Profile }> = ({ profile }) => {
   const [inputValue, setInputValue] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+
+  let connectWalletFromPage = async () => await connectWallet();
+
+  useEffect(() => {
+    let add = connectWalletFromPage().then((r) => setAddress(r));
+  });
 
   // fetch and set profile handle here
   const viewingpProfileHandle = "yoginth.test";
@@ -61,6 +70,13 @@ const OtherUserProfile: FC<{ profile: Profile }> = ({ profile }) => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Header value={inputValue} onChange={setInputValue} />
+
+        <Chat
+          account={address} //user address
+          supportAddress={profile.ownedBy}
+          apiKey="jVPMCRom1B.iDRMswdehJG7NpHDiECIHwYMMv6k2KzkPJscFIDyW8TtSnk4blYnGa8DIkfuacU0"
+          env="staging"
+        />
 
         <div className="text-white flex flex-col justify-start">
           <div className="flex flex-col">
