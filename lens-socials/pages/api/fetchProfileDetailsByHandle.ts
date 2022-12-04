@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "urql";
 import { profileDetailsByHandle } from "../../util/queries/getProfileDetailsByHandle";
 
-import { Profile } from '../../types/profile'
+import { Profile } from "../../types/profile";
 
 type Data = {
   profileDetails: Profile[];
@@ -20,17 +20,17 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   let profileDetailsList: Profile[] = [];
- 
+
   try {
     let handles = req.query.handles;
     let limit = req.query.limit;
     const response = await client
       .query(profileDetailsByHandle, { handles })
       .toPromise();
-   
-      profileDetailsList = response.data.profiles.items;
-  } catch (error) { 
+
+    profileDetailsList = response.data.profiles.items;
+  } catch (error) {
     console.log(`fetchProfileDetailsByHandle failed due to ` + error);
   }
-  res.status(200).json( {profileDetails: profileDetailsList} );
+  res.status(200).json({ profileDetails: profileDetailsList });
 }

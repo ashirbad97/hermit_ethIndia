@@ -3,29 +3,32 @@ import Head from "next/head";
 import Header from "../components/Header";
 import useSWR from "swr";
 import Image from "next/image";
+import { createClient } from "urql";
 
 import MutualFollowers from "../components/MutualFollowers";
 
-import { Profile } from "../types/profile";
+import type { Profile } from "../types/profile";
 import ProfilePublications from "../components/ProfilePublications";
+import { GetStaticPaths, GetStaticProps } from "next/types";
+import { profileDetailsByHandle } from "../util/queries/getProfileDetailsByHandle";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-const UserProfile: FC = () => {
+const OtherUserProfile: FC<{ profile: Profile }> = ({ profile }) => {
   const [inputValue, setInputValue] = useState<string>("");
 
   // fetch and set profile handle here
   const viewingpProfileHandle = "yoginth.test";
 
-  //your profile handle will be passed from parent
-  const yourProfileId = "ashirbad97.test";
+  // //your profile handle will be passed from parent
+  // const yourProfileId = "ashirbad97.test";
 
-  const { data, error } = useSWR(
-    `/api/fetchProfileDetailsByHandle?handles=${viewingpProfileHandle}`,
-    fetcher
-  );
-  if (error) return <div>failed to load</div>;
-  if (!data) return <div>loading...</div>;
+  // const { data, error } = useSWR(
+  //   `/api/fetchProfileDetailsByHandle?handles=${viewingpProfileHandle}`,
+  //   fetcher
+  // );
+  // if (error) return <div>failed to load</div>;
+  // if (!data) return <div>loading...</div>;
 
   // fetching the profileID from fetched data to get the mutual followers
   // const viewingProfileId: string = data?.profileDetails[0].id;
@@ -33,27 +36,21 @@ const UserProfile: FC = () => {
   const viewingProfileId = "0x15";
 
   let profilePic: string = "";
-  if (data?.profileDetails[0]?.picture?.original?.url != undefined) {
-    profilePic = (data.profileDetails[0].picture?.original?.url).includes(
-      "ipfs://"
-    )
-      ? "https://ipfs.io/" +
-        data.profileDetails[0].picture?.original?.url.replace(":/", "")
-      : data.profileDetails[0].picture?.original?.url;
+  if (profile.picture?.original?.url != undefined) {
+    profilePic = (profile.picture?.original?.url).includes("ipfs://")
+      ? "https://ipfs.io/" + profile.picture?.original?.url.replace(":/", "")
+      : profile.picture?.original?.url;
   }
 
   let coverPic: string = "";
-  if (data?.profileDetails[0]?.coverPicture?.original?.url != undefined) {
-    coverPic = (data.profileDetails[0].coverPicture?.original?.url).includes(
-      "ipfs://"
-    )
+  if (profile.coverPicture?.original?.url != undefined) {
+    coverPic = (profile.coverPicture?.original?.url).includes("ipfs://")
       ? "https://ipfs.io/" +
-        data.profileDetails[0].coverPicture?.original?.url.replace(":/", "")
-      : data.profileDetails[0].coverPicture?.original?.url;
+        profile.coverPicture?.original?.url.replace(":/", "")
+      : profile.coverPicture?.original?.url;
   } else {
     coverPic = "https://picsum.photos/1600/450";
   }
-  console.log(coverPic);
 
   return (
     <>
@@ -73,7 +70,7 @@ const UserProfile: FC = () => {
                 src={coverPic}
                 width={1600}
                 height={450}
-                alt={data.profileDetails[0].name}
+                alt={profile.name}
               />
             </div>
             <div className="flex justify-center">
@@ -82,18 +79,16 @@ const UserProfile: FC = () => {
                 src={profilePic}
                 width={200}
                 height={200}
-                alt={data.profileDetails[0].name}
+                alt={profile.name}
               />
             </div>
             <div className="flex flex-col items-center mt-4 font-gotham">
               <div className="text-emerald-800 text-2xl font-bold">
-                {data.profileDetails[0].name}
+                {profile.name}
               </div>
-              <div className="text-gray-400 text-xl">
-                @{data.profileDetails[0].handle}
-              </div>
+              <div className="text-gray-400 text-xl">@{profile.handle}</div>
               <div className="text-emerald-900 text-xl mt-2 font-semibold font-gotham">
-                {data.profileDetails[0].bio}
+                {profile.bio}
               </div>
             </div>
           </div>
@@ -103,23 +98,21 @@ const UserProfile: FC = () => {
               <div>
                 <span className="font-bold">
                   {" "}
-                  {data.profileDetails[0].stats.totalPublications}
+                  {profile.stats.totalPublications}
                 </span>{" "}
                 Publications
               </div>
             </div>
             <div className=" col-span-1">
               <div>
-                <span className="font-bold">
-                  {data.profileDetails[0].stats.totalCollects}
-                </span>{" "}
+                <span className="font-bold">{profile.stats.totalCollects}</span>{" "}
                 Collects
               </div>
             </div>
             <div className="col-span-1 flex flex-row-reverse">
               <div>
                 <span className="font-bold">
-                  {data.profileDetails[0].stats.totalFollowers}
+                  {profile.stats.totalFollowers}
                 </span>{" "}
                 Followers
               </div>
@@ -127,7 +120,7 @@ const UserProfile: FC = () => {
             <div className="col-span-1">
               <div>
                 <span className="font-bold">
-                  {data.profileDetails[0].stats.totalFollowing}
+                  {profile.stats.totalFollowing}
                 </span>{" "}
                 Following
               </div>
@@ -136,20 +129,49 @@ const UserProfile: FC = () => {
         </div>
 
         <div className="flex justify-center items-center flex-col">
-          <div className="text-lg text-emerald-800 font-semibold">
+          <div className="text-lg text-emerald-800 font-semibold mt-4">
             Mutual Followers
           </div>
           <MutualFollowers
             viewingProfileId={viewingProfileId}
-            yourProfileId={data.profileDetails[0].id}
+            yourProfileId={profile.id}
           />
           <div></div>
         </div>
 
-        <ProfilePublications profileId={viewingProfileId} />
+        <ProfilePublications profileId={profile.id} />
       </div>
     </>
   );
 };
 
-export default UserProfile;
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const handles = params?.slug[0];
+  const APIURL = `https://api-mumbai.lens.dev/`; //Mumbai Testnet API
+  const client = createClient({
+    url: APIURL,
+  });
+
+  let profileDetailsList: Profile[];
+
+  const response = await client
+    .query(profileDetailsByHandle, { handles })
+    .toPromise();
+
+  profileDetailsList = response.data.profiles.items;
+
+  return {
+    props: {
+      profile: profileDetailsList[0],
+    },
+  };
+};
+
+export default OtherUserProfile;
